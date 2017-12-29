@@ -31,11 +31,11 @@ public abstract class GooglePlayBuilder extends Builder implements SimpleBuildSt
         this.googleCredentialsId = googleCredentialsId;
     }
 
-    public String getGoogleCredentialsId() {
+    public final String getGoogleCredentialsId() {
         return fixEmptyAndTrim(googleCredentialsId);
     }
     
-    private String getExpandedGoogleCredentialsId() throws IOException, InterruptedException {
+    private final String getExpandedGoogleCredentialsId() throws IOException, InterruptedException {
         return expand(getGoogleCredentialsId());
     }
     
@@ -48,9 +48,9 @@ public abstract class GooglePlayBuilder extends Builder implements SimpleBuildSt
     }
 
     protected CredentialsHandler getCredentialsHandler() throws CredentialsException, IOException, InterruptedException {
-        if (credentialsHandler == null) {
+        //if (credentialsHandler == null) {
             credentialsHandler = new CredentialsHandler(getExpandedGoogleCredentialsId());
-        }
+        //}
         return credentialsHandler;
     }
 

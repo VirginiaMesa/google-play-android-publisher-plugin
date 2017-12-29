@@ -9,13 +9,16 @@ import java.io.FileNotFoundException;
 import java.security.GeneralSecurityException;
 
 import static hudson.Util.fixEmptyAndTrim;
+import java.io.IOException;
+import static org.jenkinsci.plugins.googleplayandroidpublisher.GooglePlayBuilder.currentBuild;
+import static org.jenkinsci.plugins.googleplayandroidpublisher.GooglePlayPublisher.currentListener;
 
 public class CredentialsHandler {
 
     private final String googleCredentialsId;
 
-    public CredentialsHandler(String googleCredentialsId) throws CredentialsException {
-        String id = fixEmptyAndTrim(googleCredentialsId);
+    public CredentialsHandler(String googleCredentialsId) throws CredentialsException, IOException, InterruptedException {
+        String id = expand(fixEmptyAndTrim(googleCredentialsId));
         if (id == null) {
             throw new CredentialsException("No credentials have been specified: You must add a Google Account via the "
                     + "Jenkins Credentials page, then configure this job to use those credentials");
@@ -59,6 +62,10 @@ public class CredentialsHandler {
         } catch (GeneralSecurityException e) {
             throw new UploadException(e);
         }
+    }
+    
+        protected String expand(String value) throws IOException, InterruptedException {
+        return Util.expand(currentBuild.get(), currentListener.get(), value);
     }
 
 }

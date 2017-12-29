@@ -14,6 +14,7 @@ import org.kohsuke.stapler.StaplerRequest;
 import static com.google.jenkins.plugins.credentials.oauth.GoogleRobotCredentials.getCredentialsListBox;
 import static hudson.Util.fixEmptyAndTrim;
 import static hudson.Util.tryParseNumber;
+import java.io.IOException;
 import static org.jenkinsci.plugins.googleplayandroidpublisher.Constants.DEFAULT_PERCENTAGE;
 import static org.jenkinsci.plugins.googleplayandroidpublisher.Constants.PERCENTAGE_FORMATTER;
 import static org.jenkinsci.plugins.googleplayandroidpublisher.Constants.ROLLOUT_PERCENTAGES;
@@ -35,7 +36,7 @@ public abstract class GooglePlayBuildStepDescriptor<T extends BuildStep & Descri
         return credentials;
     }
 
-    public FormValidation doCheckGoogleCredentialsId(@QueryParameter String value) {
+    public FormValidation doCheckGoogleCredentialsId(@QueryParameter String value) throws CredentialsException, IOException, InterruptedException {
         // Complain if no credentials have been set up
         ListBoxModel credentials = getCredentialsListBox(GooglePlayPublisher.class);
         if (credentials.isEmpty()) {
